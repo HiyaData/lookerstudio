@@ -1,17 +1,66 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login to View Report</title>
+    <!-- Firebase SDK -->
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
     <script>
-    var password = prompt("Please enter the password:", "");
-    if (password != "YourPassword") {
-        window.location.href = "about:blank";
-    }
-</script>
-    <title>My Looker Studio Report</title>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+  apiKey: "AIzaSyCxkx1J6K4oQYUYlrYxGaO7hjxygV1MYsM",
+  authDomain: "lookerstudio-bd129.firebaseapp.com",
+  projectId: "lookerstudio-bd129",
+  storageBucket: "lookerstudio-bd129.appspot.com",
+  messagingSenderId: "935174107677",
+  appId: "1:935174107677:web:dc6b6df203b6d0da744cf4"
+};
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+    </script>
 </head>
 <body>
-    <p>Hello!!!!!!±</p>
-    <iframe width="600" height="450" src="https://lookerstudio.google.com/embed/reporting/d90f93bf-6cea-4e3e-9965-b2d44e7d0be7/page/8cAvD" frameborder="0" style="border:0" allowfullscreen sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
-    <!-- Paste your Looker Studio iframe embed code here -->
+    <h2>Login to View Report</h2>
+    <div>
+        <input id="email" type="email" placeholder="Email">
+        <input id="password" type="password" placeholder="Password">
+        <button onclick="login()">Login</button>
+    </div>
+    <div id="reportContainer" style="display:none">
+           <iframe width="600" height="450" src="https://lookerstudio.google.com/embed/reporting/d90f93bf-6cea-4e3e-9965-b2d44e7d0be7/page/8cAvD" frameborder="0" style="border:0" allowfullscreen sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
+
+    </div>
+    <script>
+      function login() {
+        var email = document.getElementById('email').value;
+        var password = document.getElementById('password').value;
+        firebase.auth().signInWithEmailAndPassword(email, password)
+          .then((userCredential) => {
+            // Signed in
+            document.getElementById('reportContainer').style.display = 'block';
+          })
+          .catch((error) => {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            alert(errorMessage);
+          });
+      }
+
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          // User is signed in, show the report
+          document.getElementById('reportContainer').style.display = 'block';
+        } else {
+          // No user is signed in, hide the report
+          document.getElementById('reportContainer').style.display = 'none';
+        }
+      });
+    </script>
 </body>
 </html>
+
